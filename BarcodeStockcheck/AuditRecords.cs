@@ -1,4 +1,6 @@
 ﻿using JsonFlatFileDataStore;
+using System.Drawing.Imaging;
+using System.Windows.Forms.VisualStyles;
 
 namespace BarcodeStocktake
 {
@@ -56,6 +58,37 @@ namespace BarcodeStocktake
             };
             logCollection.InsertOne(auditItem);
             return auditItem;
+        }
+
+        public string[] GetSearchByOptions()
+        {
+            var collection = _store.GetCollection<AuditItem>("stock");
+            return typeof(AuditItem).GetProperties()
+                .Select(p => p.Name)
+                .ToArray();
+        }
+
+        public string[] GetPropertyValues(bool includeBlanks, string propertyName)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                return new string []{ }; 
+
+            var collection = _store.GetCollection<AuditItem>("stock");
+            var property = typeof(AuditItem).GetProperties()
+                .Where(w => w.Name == propertyName)
+                .Single();
+
+            var results = collection.AsQueryable().Select(item => property.GetValue(item)?.ToString()).Distinct().ToArray();
+
+            if (!includeBlanks)
+                results = results.Except(results.Where(r => r is null || r.ToString().Length == 0)).ToArray();
+
+            return results;
+        }
+
+        public IEnumerable<AuditItem> GetStocklist()
+        {
+            return _store.GetCollection<AuditItem>("stock").AsQueryable().ToList();
         }
     }
 }

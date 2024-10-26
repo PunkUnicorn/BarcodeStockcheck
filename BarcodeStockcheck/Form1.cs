@@ -9,7 +9,7 @@ namespace BarcodeStocktake
         private BarcodeLookupService goUpsService2;
         private BarcodeLookupService? useService;
         private IStoreBarcodeLookupResults _storeLookupResults = new StoreLookupResults();
-        private AuditRecords AuditRecords = new AuditRecords();
+        private AuditRecords _auditRecords = new AuditRecords();
         private Color backColor;
 
         // how to add listview details
@@ -19,18 +19,24 @@ namespace BarcodeStocktake
         public Form1()
         {
             InitializeComponent();
-            
+
             backColor = textBoxBarcode.BackColor;
             barcodeLookupService = new BarcodeLookupService(new BarcodeExecuteBarcodeLookup(_storeLookupResults));
             goUpsService2 = new BarcodeLookupService(new BarcodeExecuteGoUpc(_storeLookupResults));
             useService = barcodeLookupService;
 
+            comboBoxMatchValue.Enabled = checkBoxToMatchValue.Checked;
 
-            var widths = new int[] {100, 100, 250, 100, 150 };
+            var widths = new int[] { 100, 100, 250, 100, 150, 100 };
             var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-            int i=0;
+            int i = 0;
             foreach (var prop in typeof(AuditLog).GetProperties())
-                listView1.Columns.Add(prop.Name, getWidth(i++));
+                listViewLog.Columns.Add(prop.Name, getWidth(i++));
+
+            //i = 0;
+            //foreach (var prop in typeof(AuditItem).GetProperties())
+            //    listViewInventory.Columns.Add(prop.Name, getWidth(i++));
+
         }
 
         private async void buttonLookup_Click(object sender, EventArgs e)
@@ -48,7 +54,7 @@ namespace BarcodeStocktake
             var info = await useService.GetBarcodeInfoAsync(code, alias);
 
             var auditItemToUpdate = new AuditItem(_storeLookupResults, code, location);
-            
+
             ResetDataEntry();
 
             if (info is null)
@@ -66,7 +72,7 @@ namespace BarcodeStocktake
                 try
                 {
                     var updateItem = new AuditRecords.UpdateItemDetails(auditItemToUpdate, location, quantityToAdd);
-                    var logItem = AuditRecords.UpdateItem(updateItem);
+                    var logItem = _auditRecords.UpdateItem(updateItem);
                     updateFailed = false;
                     AddToVisualList(logItem!);
                 }
@@ -78,7 +84,7 @@ namespace BarcodeStocktake
                         labelError.Text = "Uppdate failed! " + ex.Message;
                     }
                     else
-                    { 
+                    {
                         labelError.Text = "Display failed to update (but details were saved) " + ex.Message;
                     }
                 }
@@ -91,12 +97,14 @@ namespace BarcodeStocktake
                 .Select(s => s.GetValue(auditLogItem).ToString())
                 .ToArray();
 
-            listView1.Items.Insert(0, new ListViewItem(data));
+            listViewLog.Items.Insert(0, new ListViewItem(data));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             ResetDataEntry();
+
+            comboBoxSearchByOptions.Items.AddRange(_auditRecords.GetSearchByOptions());
         }
 
         private void ResetDataEntry()
@@ -116,6 +124,96 @@ namespace BarcodeStocktake
             var me = (CheckBox)sender;
             useService = me.Checked ? barcodeLookupService : goUpsService2;
             textBoxBarcode.Focus();
+        }
+
+        private void comboBoxSearchByOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var me = (ComboBox)sender;
+
+            if (checkBoxToMatchValue.Checked)
+            {
+                comboBoxMatchValue.Text = null;
+                comboBoxMatchValue.Items.Clear();
+                comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, me.Text));
+            }
+        }
+
+        private void checkBoxToMatchValue_CheckedChanged(object sender, EventArgs e)
+        {
+            var me = (CheckBox)sender;
+            comboBoxMatchValue.Enabled = me.Checked;
+
+            if (checkBoxToMatchValue.Checked)
+            {
+                comboBoxMatchValue.Text = null;
+                comboBoxMatchValue.Items.Clear();
+                comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, comboBoxSearchByOptions.Text));
+            }
+        }
+
+        private void buttonRefreshList_Click(object sender, EventArgs e)
+        {
+            listViewInventory.Columns.Clear();
+            listViewInventory.Items.Clear();
+            listViewInventory.Clear();
+
+            if (checkBoxToMatchValue.Checked && !string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
+            {
+
+                var widths = new int[] { 100, 100, 250, 100, 150, 100 };
+                var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+                int i = 0;
+                foreach (var prop in typeof(AuditItem).GetProperties())
+                    listViewInventory.Columns.Add(prop.Name, getWidth(i++));
+
+                var items = _auditRecords.GetStocklist()
+                    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .ToList();
+
+                foreach (var item in items)
+                {
+                    var data = typeof(AuditItem).GetProperties()
+                        .Select(s => s.GetValue(item)?.ToString() ?? "")
+                        .ToArray();
+
+                    listViewInventory.Items.Insert(0, new ListViewItem(data));
+                }
+
+                //var widths = new int[] { 150, 100 };
+                //var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+                //int i = 0;
+                //foreach (var prop in new[] { comboBoxSearchByOptions.Text, "Count" })
+                //    listViewInventory.Columns.Add(prop, getWidth(i++));
+
+                //var items = _auditRecords.GetStocklist()
+                //    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString() == comboBoxMatchValue.Text)
+                //    .GroupBy(gb => gb.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).Name)
+                //    .ToDictionary(k=>k.Key, v=>v.ToList());
+
+                //foreach (var key in items.Keys)
+                //    listViewInventory.Items.Insert(0, new ListViewItem(new string[] { key, items[key].Count().ToString() }));
+            }
+            else
+            {
+                var widths = new int[] { 100, 100, 250, 100, 150, 100 };
+                var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+                int i = 0;
+                foreach (var prop in typeof(AuditItem).GetProperties())
+                    listViewInventory.Columns.Add(prop.Name, getWidth(i++));
+
+                var items = _auditRecords.GetStocklist()
+                    //.Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .ToList();
+
+                foreach (var item in items)
+                { 
+                    var data = typeof(AuditItem).GetProperties()
+                        .Select(s => s.GetValue(item)?.ToString() ?? "")
+                        .ToArray();
+
+                    listViewInventory.Items.Insert(0, new ListViewItem(data));
+                }
+            }
         }
     }
 }

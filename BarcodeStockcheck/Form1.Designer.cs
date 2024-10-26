@@ -48,7 +48,19 @@
             labelError = new Label();
             checkBoxSwapProvider = new CheckBox();
             splitContainer1 = new SplitContainer();
-            listView1 = new ListView();
+            tabControl1 = new TabControl();
+            tabPageAuditLog = new TabPage();
+            listViewLog = new ListView();
+            tabPageInventory = new TabPage();
+            listViewInventory = new ListView();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            panel4 = new Panel();
+            checkBoxToMatchValue = new CheckBox();
+            buttonRefreshList = new Button();
+            checkBoxInventoryIncludeBlank = new CheckBox();
+            comboBoxMatchValue = new ComboBox();
+            comboBoxSearchByOptions = new ComboBox();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCover).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
@@ -58,6 +70,11 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tabPageAuditLog.SuspendLayout();
+            tabPageInventory.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // textBoxBarcode
@@ -103,7 +120,7 @@
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(773, 299);
+            flowLayoutPanel1.Size = new Size(839, 280);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -268,29 +285,164 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(listView1);
-            splitContainer1.Size = new Size(773, 924);
-            splitContainer1.SplitterDistance = 299;
+            splitContainer1.Panel2.Controls.Add(tabControl1);
+            splitContainer1.Size = new Size(839, 866);
+            splitContainer1.SplitterDistance = 280;
             splitContainer1.TabIndex = 4;
             splitContainer1.TabStop = false;
             // 
-            // listView1
+            // tabControl1
             // 
-            listView1.Dock = DockStyle.Fill;
-            listView1.Location = new Point(0, 0);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(773, 621);
-            listView1.TabIndex = 0;
-            listView1.TabStop = false;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            tabControl1.Controls.Add(tabPageAuditLog);
+            tabControl1.Controls.Add(tabPageInventory);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(839, 582);
+            tabControl1.TabIndex = 1;
+            tabControl1.TabStop = false;
+            // 
+            // tabPageAuditLog
+            // 
+            tabPageAuditLog.Controls.Add(listViewLog);
+            tabPageAuditLog.Location = new Point(4, 24);
+            tabPageAuditLog.Name = "tabPageAuditLog";
+            tabPageAuditLog.Padding = new Padding(3);
+            tabPageAuditLog.Size = new Size(831, 554);
+            tabPageAuditLog.TabIndex = 0;
+            tabPageAuditLog.Text = "Audit Log";
+            tabPageAuditLog.UseVisualStyleBackColor = true;
+            // 
+            // listViewLog
+            // 
+            listViewLog.Dock = DockStyle.Fill;
+            listViewLog.Location = new Point(3, 3);
+            listViewLog.Name = "listViewLog";
+            listViewLog.Size = new Size(825, 548);
+            listViewLog.TabIndex = 0;
+            listViewLog.TabStop = false;
+            listViewLog.UseCompatibleStateImageBehavior = false;
+            listViewLog.View = View.Details;
+            // 
+            // tabPageInventory
+            // 
+            tabPageInventory.Controls.Add(listViewInventory);
+            tabPageInventory.Controls.Add(flowLayoutPanel2);
+            tabPageInventory.Location = new Point(4, 24);
+            tabPageInventory.Name = "tabPageInventory";
+            tabPageInventory.Padding = new Padding(3);
+            tabPageInventory.Size = new Size(831, 554);
+            tabPageInventory.TabIndex = 1;
+            tabPageInventory.Text = "Inventory";
+            tabPageInventory.UseVisualStyleBackColor = true;
+            // 
+            // listViewInventory
+            // 
+            listViewInventory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            listViewInventory.Location = new Point(0, 39);
+            listViewInventory.Name = "listViewInventory";
+            listViewInventory.Size = new Size(832, 551);
+            listViewInventory.TabIndex = 1;
+            listViewInventory.UseCompatibleStateImageBehavior = false;
+            listViewInventory.View = View.Details;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            flowLayoutPanel2.Controls.Add(panel4);
+            flowLayoutPanel2.Location = new Point(0, 0);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(831, 39);
+            flowLayoutPanel2.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            panel4.AutoSize = true;
+            panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel4.Controls.Add(checkBoxToMatchValue);
+            panel4.Controls.Add(buttonRefreshList);
+            panel4.Controls.Add(checkBoxInventoryIncludeBlank);
+            panel4.Controls.Add(comboBoxMatchValue);
+            panel4.Controls.Add(comboBoxSearchByOptions);
+            panel4.Controls.Add(label2);
+            panel4.Location = new Point(3, 3);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(691, 30);
+            panel4.TabIndex = 0;
+            // 
+            // checkBoxToMatchValue
+            // 
+            checkBoxToMatchValue.AutoSize = true;
+            checkBoxToMatchValue.Location = new Point(255, 4);
+            checkBoxToMatchValue.Name = "checkBoxToMatchValue";
+            checkBoxToMatchValue.Size = new Size(109, 19);
+            checkBoxToMatchValue.TabIndex = 5;
+            checkBoxToMatchValue.TabStop = false;
+            checkBoxToMatchValue.Text = "To match value:";
+            checkBoxToMatchValue.UseVisualStyleBackColor = true;
+            checkBoxToMatchValue.CheckedChanged += checkBoxToMatchValue_CheckedChanged;
+            // 
+            // buttonRefreshList
+            // 
+            buttonRefreshList.AutoSize = true;
+            buttonRefreshList.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonRefreshList.Location = new Point(490, 2);
+            buttonRefreshList.Name = "buttonRefreshList";
+            buttonRefreshList.Size = new Size(74, 25);
+            buttonRefreshList.TabIndex = 4;
+            buttonRefreshList.TabStop = false;
+            buttonRefreshList.Text = "RefreshList";
+            buttonRefreshList.UseVisualStyleBackColor = true;
+            buttonRefreshList.Click += buttonRefreshList_Click;
+            // 
+            // checkBoxInventoryIncludeBlank
+            // 
+            checkBoxInventoryIncludeBlank.AutoSize = true;
+            checkBoxInventoryIncludeBlank.Checked = true;
+            checkBoxInventoryIncludeBlank.CheckState = CheckState.Checked;
+            checkBoxInventoryIncludeBlank.Location = new Point(586, 5);
+            checkBoxInventoryIncludeBlank.Name = "checkBoxInventoryIncludeBlank";
+            checkBoxInventoryIncludeBlank.Size = new Size(102, 19);
+            checkBoxInventoryIncludeBlank.TabIndex = 1;
+            checkBoxInventoryIncludeBlank.TabStop = false;
+            checkBoxInventoryIncludeBlank.Text = "Include blanks";
+            checkBoxInventoryIncludeBlank.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxMatchValue
+            // 
+            comboBoxMatchValue.FormattingEnabled = true;
+            comboBoxMatchValue.Location = new Point(366, 2);
+            comboBoxMatchValue.Name = "comboBoxMatchValue";
+            comboBoxMatchValue.Size = new Size(121, 23);
+            comboBoxMatchValue.TabIndex = 3;
+            comboBoxMatchValue.TabStop = false;
+            // 
+            // comboBoxSearchByOptions
+            // 
+            comboBoxSearchByOptions.FormattingEnabled = true;
+            comboBoxSearchByOptions.Location = new Point(99, 2);
+            comboBoxSearchByOptions.Name = "comboBoxSearchByOptions";
+            comboBoxSearchByOptions.Size = new Size(145, 23);
+            comboBoxSearchByOptions.TabIndex = 1;
+            comboBoxSearchByOptions.TabStop = false;
+            comboBoxSearchByOptions.SelectedIndexChanged += comboBoxSearchByOptions_SelectedIndexChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 4);
+            label2.Name = "label2";
+            label2.Size = new Size(93, 15);
+            label2.TabIndex = 0;
+            label2.Text = "Search proprety:";
             // 
             // Form1
             // 
             AcceptButton = buttonLookup;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(773, 924);
+            ClientSize = new Size(839, 866);
             Controls.Add(splitContainer1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
@@ -309,6 +461,13 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            tabPageAuditLog.ResumeLayout(false);
+            tabPageInventory.ResumeLayout(false);
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -329,10 +488,22 @@
         private Button buttonCopyDescription;
         private Panel panel3;
         private Button button1;
-        private ListView listView1;
+        private ListView listViewLog;
         private Label labelError;
         private TextBox textBoxAlias;
         private CheckBox checkBoxSwapProvider;
         private TextBox textBoxStorageCode;
+        private TabControl tabControl1;
+        private TabPage tabPageAuditLog;
+        private TabPage tabPageInventory;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Panel panel4;
+        private Label label2;
+        private ComboBox comboBoxMatchValue;
+        private ComboBox comboBoxSearchByOptions;
+        private Button buttonRefreshList;
+        private ListView listViewInventory;
+        private CheckBox checkBoxInventoryIncludeBlank;
+        private CheckBox checkBoxToMatchValue;
     }
 }
