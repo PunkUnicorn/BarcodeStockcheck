@@ -1,6 +1,6 @@
 ﻿namespace BarcodeStocktake
 {
-    public interface IHasBarcodeScanResult
+    public interface IHasBarcodeLookupResult
     {
         string Code { get; }
         string? Title { get; }

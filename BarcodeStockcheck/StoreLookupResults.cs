@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace BarcodeStocktake
 {
-    public class StoreLookupResults : IStoreLookupResults
+    public class StoreLookupResults : IStoreBarcodeLookupResults
     {
         private DataStore _store = new DataStore("Alpha_StoreLookupResults.json");
 

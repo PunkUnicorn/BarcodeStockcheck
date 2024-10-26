@@ -1,33 +1,26 @@
-﻿
-using RestSharp.Authenticators;
-using RestSharp;
+﻿using RestSharp;
 using Newtonsoft.Json;
 using System.Dynamic;
-//using System.Dynamic;
-//using static System.Windows.Forms.Design.AxImporter;
-//using System.Threading;
-//using RestSharp;
-//using RestSharp.Authenticators;
 
 namespace BarcodeStocktake
 {
-
-    public class BarcodeGoUpcService : IExecuteBarcodeLookup
+    public class BarcodeExecuteBarcodeLookup : IExecuteBarcodeLookup
     {
-        private RestClient _client;
+        private RestClient? _client;
         private CancellationToken CancellationToken;
-        private IStoreLookupResults _storeLookupRequests;
+        private string _key;
+        private IStoreBarcodeLookupResults _storeLookupRequests;
 
-        public BarcodeGoUpcService(IStoreLookupResults storeLookupRequests)
+        public BarcodeExecuteBarcodeLookup(IStoreBarcodeLookupResults storeLookupRequests)
         {
             _storeLookupRequests = storeLookupRequests;
         }
 
         public async Task InitiateAsync(CancellationToken ctxToken)
-        { 
+        {
             CancellationToken = ctxToken;
-            var bearerToken = File.ReadAllText("Alpha_go-upc.key");
-            var options = new RestClientOptions("https://go-upc.com/api/v1") { Authenticator = new JwtAuthenticator(bearerToken) };
+            _key = File.ReadAllText("Alpha_barcodelookup.key");
+            var options = new RestClientOptions("https://api.barcodelookup.com/v3/products");
             _client = new RestClient(options);
         }
 
@@ -38,15 +31,22 @@ namespace BarcodeStocktake
 
         public async Task<BarcodeLookupResult?> LookupAsync(string code)
         {
-            var request = new RestRequest($"code/{code}");
+            var request = new RestRequest();
+            request.AddQueryParameter("barcode", code);
+            request.AddQueryParameter("formatted", "y");
+            request.AddQueryParameter("key", _key);
 
             try
-            { 
+            {
                 var response = await _client.GetAsync(request, CancellationToken);
+
+                if (!response.IsSuccessful)
+                    return null;
+
                 return MakeBarcodeLookupResult(code, response);
             }
-            catch (HttpRequestException ex ) when (ex.Message == "Request failed with status code BadRequest") 
-            { 
+            catch (HttpRequestException ex) when (ex.Message == "Request failed with status code BadRequest")
+            {
                 return null;
             }
         }
@@ -59,7 +59,9 @@ namespace BarcodeStocktake
             var jsonFilename = ResponseUtil.MakeJsonFile(code, response);
 
             dynamic obj = JsonConvert.DeserializeObject<ExpandoObject>(response.Content);
-            _ = ((IDictionary<string, object>)obj).Any(); // <-- sic - Force naked null reference exception
+            _ = ((IDictionary<string, object>)obj).Any(); // <-- sic - Force native null reference exception
+
+            obj = obj.products[0];
 
             var imageUrl = (string?)ResponseUtil.GetProp(obj, "imageUrl");
             var ret = new BarcodeLookupResult
@@ -68,10 +70,10 @@ namespace BarcodeStocktake
                 LookupTimestamp = DateTime.Now,
                 Code = code,
                 CodeType = ResponseUtil.GetProp(obj, "codeType"),
-                Publisher = ResponseUtil.GetProp(obj, "publisher"),
-                Title = ResponseUtil.GetProp(obj, "name"),
+                Publisher = ResponseUtil.GetProp(obj, "manufacturer"),
+                Title = ResponseUtil.GetProp(obj, "title"),
                 Description = ResponseUtil.GetProp(obj, "description"),
-                ImageUrl = imageUrl,
+                ImageUrl = ResponseUtil.GetFirstArrayItem(obj, "images"),
                 ImageThumbnailBase64 = ResponseUtil.MakeBase64Thumbnail(imageUrl),
                 JsonResponseFilename = jsonFilename
             };
@@ -83,6 +85,9 @@ namespace BarcodeStocktake
             var publisherFromDesc = ResponseUtil.SearchDescriptionForProperties("Publisher", ret.Description);
             if (publisherFromDesc != null)
                 ret.Publisher = publisherFromDesc;
+
+            //if (ret.Description?.Contains("Essential Christian", StringComparison.OrdinalIgnoreCase) ?? false)
+            //    ret.Publisher = "Essential Christian";
 
             if (ret.Publisher == "")
                 ret.Publisher = null;

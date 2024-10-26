@@ -1,8 +1,8 @@
 ﻿namespace BarcodeStocktake
 {
-    public class AuditItem : IHasBarcodeScanResult
+    public class AuditItem : IHasBarcodeLookupResult
     {
-        public AuditItem(IStoreLookupResults storeLookupResults, string code, string storageLocation)
+        public AuditItem(IStoreBarcodeLookupResults storeLookupResults, string code, string storageLocation)
         {
             Code = code;
             StorageLocation = storageLocation;

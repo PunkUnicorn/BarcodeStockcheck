@@ -8,7 +8,7 @@ namespace BarcodeStocktake
         private BarcodeLookupService barcodeLookupService;
         private BarcodeLookupService goUpsService2;
         private BarcodeLookupService? useService;
-        private IStoreLookupResults _storeLookupResults = new StoreLookupResults();
+        private IStoreBarcodeLookupResults _storeLookupResults = new StoreLookupResults();
         private AuditRecords AuditRecords = new AuditRecords();
         private Color backColor;
 
@@ -21,9 +21,16 @@ namespace BarcodeStocktake
             InitializeComponent();
             
             backColor = textBoxBarcode.BackColor;
-            barcodeLookupService = new BarcodeLookupService(new BarcodeBarcodeLookupService(_storeLookupResults));
-            goUpsService2 = new BarcodeLookupService(new BarcodeGoUpcService(_storeLookupResults));
+            barcodeLookupService = new BarcodeLookupService(new BarcodeExecuteBarcodeLookup(_storeLookupResults));
+            goUpsService2 = new BarcodeLookupService(new BarcodeExecuteGoUpc(_storeLookupResults));
             useService = barcodeLookupService;
+
+
+            var widths = new int[] {100, 100, 250, 100, 150 };
+            var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+            int i=0;
+            foreach (var prop in typeof(AuditLog).GetProperties())
+                listView1.Columns.Add(prop.Name, getWidth(i++));
         }
 
         private async void buttonLookup_Click(object sender, EventArgs e)
@@ -59,9 +66,9 @@ namespace BarcodeStocktake
                 try
                 {
                     var updateItem = new AuditRecords.UpdateItemDetails(auditItemToUpdate, location, quantityToAdd);
-                    AuditRecords.UpdateItem(updateItem);
+                    var logItem = AuditRecords.UpdateItem(updateItem);
                     updateFailed = false;
-                    AddToVisualList(updateItem);
+                    AddToVisualList(logItem!);
                 }
                 catch (Exception ex)
                 {
@@ -78,12 +85,13 @@ namespace BarcodeStocktake
             }
         }
 
-        private void AddToVisualList(AuditRecords.UpdateItemDetails updateItem)
+        private void AddToVisualList(AuditLog auditLogItem)
         {
-            listView1.Columns.Add("Header", 100);
-            listView1.Columns.Add("Details", 100);
+            var data = typeof(AuditLog).GetProperties()
+                .Select(s => s.GetValue(auditLogItem).ToString())
+                .ToArray();
 
-            listView1.Items.Add(new ListViewItem(new string[] { "Some header", "Some details "}));
+            listView1.Items.Insert(0, new ListViewItem(data));
         }
 
         private void Form1_Load(object sender, EventArgs e)

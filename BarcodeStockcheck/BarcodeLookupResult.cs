@@ -2,7 +2,7 @@
 
 namespace BarcodeStocktake
 {
-    public class BarcodeLookupResult : IHasBarcodeScanResult
+    public class BarcodeLookupResult : IHasBarcodeLookupResult
     {
         public string? SourceUrl { get;set; }
         public string Code { get; set; } = "";

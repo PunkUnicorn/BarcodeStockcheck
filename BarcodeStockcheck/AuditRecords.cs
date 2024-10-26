@@ -5,6 +5,7 @@ namespace BarcodeStocktake
     public class AuditRecords
     {
         private DataStore _store = new DataStore("Alpha_StoreStockAuditRecords.json");
+        private DataStore _log = new DataStore("Alpha_StoreStockAuditLog.json");
 
         public class UpdateItemDetails
         {
@@ -20,7 +21,7 @@ namespace BarcodeStocktake
             }
         }
 
-        public void UpdateItem(UpdateItemDetails updateItem)
+        public AuditLog UpdateItem(UpdateItemDetails updateItem)
         {
             var collection = _store.GetCollection<AuditItem>("stock");
             Func<dynamic, bool> matchCode = e => e.Code == updateItem.Item.Code;
@@ -43,6 +44,18 @@ namespace BarcodeStocktake
                 updateItem.Item.InsertTimestamp = DateTime.Now;
                 collection.InsertOne(updateItem.Item);
             }
+
+            var logCollection = _log.GetCollection<AuditLog>("log");
+            var auditItem = new AuditLog
+            {
+                Code = updateItem.Item.Code,
+                Increment = updateItem.QuantityToAdd,
+                Title = updateItem.Item?.Title ?? "",
+                Location = updateItem.Item?.StorageLocation ?? "",
+                AuditLogTimestamp = DateTime.Now,
+            };
+            logCollection.InsertOne(auditItem);
+            return auditItem;
         }
     }
 }
