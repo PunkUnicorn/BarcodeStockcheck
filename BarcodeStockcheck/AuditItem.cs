@@ -8,9 +8,11 @@
             StorageLocation = storageLocation;
             if (storeLookupResults != null)
             { 
-                var clone = storeLookupResults.GetByCode(code)
-                    ?? throw new NullReferenceException(nameof(storeLookupResults.GetByCode));
+                var clone = storeLookupResults.GetByCode(code);
+                    //?? throw new NullReferenceException(nameof(storeLookupResults.GetByCode));
                 //StorageLocation = storageLocation;
+                if (clone == null)
+                    return;
 
                 Title = clone.Title;
                 SourceUrl = clone.SourceUrl;

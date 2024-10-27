@@ -68,12 +68,21 @@ namespace BarcodeStocktake
             if ((existing = _executeLookup.IsStored(barcode)) != null) 
                 return existing;
 
+            try
+            { 
+                var lookupResult = await _executeLookup.LookupAsync(barcode);
+                if (lookupResult == null)
+                    Error = "Not found!";
 
-            var lookupResult = await _executeLookup.LookupAsync(barcode);
-            if (lookupResult == null)
-                Error = "Not found!";
+                return lookupResult;
+            }
+            catch (Exception ex)
+            {
+                Error = ex.Message;
+            }
 
-            return lookupResult;
+
+            return null;
         }
 
         private void AddAlias(string code, string alias)

@@ -55,7 +55,7 @@
             listViewInventory = new ListView();
             flowLayoutPanel2 = new FlowLayoutPanel();
             panel4 = new Panel();
-            checkBoxToMatchValue = new CheckBox();
+            label3 = new Label();
             buttonRefreshList = new Button();
             checkBoxInventoryIncludeBlank = new CheckBox();
             comboBoxMatchValue = new ComboBox();
@@ -120,7 +120,7 @@
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(839, 280);
+            flowLayoutPanel1.Size = new Size(839, 313);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -287,7 +287,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new Size(839, 866);
-            splitContainer1.SplitterDistance = 280;
+            splitContainer1.SplitterDistance = 313;
             splitContainer1.TabIndex = 4;
             splitContainer1.TabStop = false;
             // 
@@ -299,7 +299,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(839, 582);
+            tabControl1.Size = new Size(839, 549);
             tabControl1.TabIndex = 1;
             tabControl1.TabStop = false;
             // 
@@ -309,7 +309,7 @@
             tabPageAuditLog.Location = new Point(4, 24);
             tabPageAuditLog.Name = "tabPageAuditLog";
             tabPageAuditLog.Padding = new Padding(3);
-            tabPageAuditLog.Size = new Size(831, 554);
+            tabPageAuditLog.Size = new Size(831, 521);
             tabPageAuditLog.TabIndex = 0;
             tabPageAuditLog.Text = "Audit Log";
             tabPageAuditLog.UseVisualStyleBackColor = true;
@@ -319,7 +319,7 @@
             listViewLog.Dock = DockStyle.Fill;
             listViewLog.Location = new Point(3, 3);
             listViewLog.Name = "listViewLog";
-            listViewLog.Size = new Size(825, 548);
+            listViewLog.Size = new Size(825, 515);
             listViewLog.TabIndex = 0;
             listViewLog.TabStop = false;
             listViewLog.UseCompatibleStateImageBehavior = false;
@@ -332,7 +332,7 @@
             tabPageInventory.Location = new Point(4, 24);
             tabPageInventory.Name = "tabPageInventory";
             tabPageInventory.Padding = new Padding(3);
-            tabPageInventory.Size = new Size(831, 554);
+            tabPageInventory.Size = new Size(831, 521);
             tabPageInventory.TabIndex = 1;
             tabPageInventory.Text = "Inventory";
             tabPageInventory.UseVisualStyleBackColor = true;
@@ -360,7 +360,7 @@
             // 
             panel4.AutoSize = true;
             panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel4.Controls.Add(checkBoxToMatchValue);
+            panel4.Controls.Add(label3);
             panel4.Controls.Add(buttonRefreshList);
             panel4.Controls.Add(checkBoxInventoryIncludeBlank);
             panel4.Controls.Add(comboBoxMatchValue);
@@ -371,17 +371,14 @@
             panel4.Size = new Size(691, 30);
             panel4.TabIndex = 0;
             // 
-            // checkBoxToMatchValue
+            // label3
             // 
-            checkBoxToMatchValue.AutoSize = true;
-            checkBoxToMatchValue.Location = new Point(255, 4);
-            checkBoxToMatchValue.Name = "checkBoxToMatchValue";
-            checkBoxToMatchValue.Size = new Size(109, 19);
-            checkBoxToMatchValue.TabIndex = 5;
-            checkBoxToMatchValue.TabStop = false;
-            checkBoxToMatchValue.Text = "To match value:";
-            checkBoxToMatchValue.UseVisualStyleBackColor = true;
-            checkBoxToMatchValue.CheckedChanged += checkBoxToMatchValue_CheckedChanged;
+            label3.AutoSize = true;
+            label3.Location = new Point(244, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(90, 15);
+            label3.TabIndex = 6;
+            label3.Text = "To match value:";
             // 
             // buttonRefreshList
             // 
@@ -412,7 +409,7 @@
             // comboBoxMatchValue
             // 
             comboBoxMatchValue.FormattingEnabled = true;
-            comboBoxMatchValue.Location = new Point(366, 2);
+            comboBoxMatchValue.Location = new Point(337, 2);
             comboBoxMatchValue.Name = "comboBoxMatchValue";
             comboBoxMatchValue.Size = new Size(121, 23);
             comboBoxMatchValue.TabIndex = 3;
@@ -504,6 +501,6 @@
         private Button buttonRefreshList;
         private ListView listViewInventory;
         private CheckBox checkBoxInventoryIncludeBlank;
-        private CheckBox checkBoxToMatchValue;
+        private Label label3;
     }
 }

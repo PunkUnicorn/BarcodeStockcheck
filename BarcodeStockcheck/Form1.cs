@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic.Devices;
+using System.Linq;
 using System.Media;
 
 namespace BarcodeStocktake
@@ -25,7 +26,7 @@ namespace BarcodeStocktake
             goUpsService2 = new BarcodeLookupService(new BarcodeExecuteGoUpc(_storeLookupResults));
             useService = barcodeLookupService;
 
-            comboBoxMatchValue.Enabled = checkBoxToMatchValue.Checked;
+            //comboBoxMatchValue.Enabled = checkBoxToMatchValue.Checked;
 
             var widths = new int[] { 100, 100, 250, 100, 150, 100 };
             var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
@@ -130,12 +131,9 @@ namespace BarcodeStocktake
         {
             var me = (ComboBox)sender;
 
-            if (checkBoxToMatchValue.Checked)
-            {
-                comboBoxMatchValue.Text = null;
-                comboBoxMatchValue.Items.Clear();
-                comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, me.Text));
-            }
+            comboBoxMatchValue.Text = null;
+            comboBoxMatchValue.Items.Clear();
+            comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, me.Text));
         }
 
         private void checkBoxToMatchValue_CheckedChanged(object sender, EventArgs e)
@@ -143,12 +141,9 @@ namespace BarcodeStocktake
             var me = (CheckBox)sender;
             comboBoxMatchValue.Enabled = me.Checked;
 
-            if (checkBoxToMatchValue.Checked)
-            {
-                comboBoxMatchValue.Text = null;
-                comboBoxMatchValue.Items.Clear();
-                comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, comboBoxSearchByOptions.Text));
-            }
+            comboBoxMatchValue.Text = null;
+            comboBoxMatchValue.Items.Clear();
+            comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, comboBoxSearchByOptions.Text));
         }
 
         private void buttonRefreshList_Click(object sender, EventArgs e)
@@ -157,53 +152,68 @@ namespace BarcodeStocktake
             listViewInventory.Items.Clear();
             listViewInventory.Clear();
 
-            if (checkBoxToMatchValue.Checked && !string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
-            {
+            // Get counts
+            //
+            //var widths = new int[] { 150, 100 };
+            //var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+            //int i = 0;
+            //foreach (var prop in new[] { comboBoxSearchByOptions.Text, "Count" })
+            //    listViewInventory.Columns.Add(prop, getWidth(i++));
 
-                var widths = new int[] { 100, 100, 250, 100, 150, 100 };
+            //var items = _auditRecords.GetStocklist()
+            //    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString() == comboBoxMatchValue.Text)
+            //    .GroupBy(gb => gb.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).Name)
+            //    .ToDictionary(k=>k.Key, v=>v.ToList());
+
+            //foreach (var key in items.Keys)
+            //    listViewInventory.Items.Insert(0, new ListViewItem(new string[] { key, items[key].Count().ToString() }));
+
+
+
+
+
+            //if (!string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
+            //{
+
+            //    var widths = new int[] { 100, 100, 250, 100, 150, 100 };
+            //    var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+            //    int i = 0;
+            //    foreach (var prop in typeof(AuditItem).GetProperties())
+            //        listViewInventory.Columns.Add(prop.Name, getWidth(i++));
+
+            //    var items = _auditRecords.GetStocklist()
+            //        .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
+            //        .ToList();
+
+            //    foreach (var item in items)
+            //    {
+            //        var data = typeof(AuditItem).GetProperties()
+            //            .Select(s => s.GetValue(item)?.ToString() ?? "")
+            //            .ToArray();
+
+            //        listViewInventory.Items.Insert(0, new ListViewItem(data));
+            //    }
+            //}
+            //else
+            //{
+                var widths = new int[] { 30, 80, 50, 100, 200, 50, 150 };
                 var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
                 int i = 0;
                 foreach (var prop in typeof(AuditItem).GetProperties())
                     listViewInventory.Columns.Add(prop.Name, getWidth(i++));
 
-                var items = _auditRecords.GetStocklist()
-                    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
-                    .ToList();
+                var items = _auditRecords.GetStocklist();
 
-                foreach (var item in items)
+                if (!string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
                 {
-                    var data = typeof(AuditItem).GetProperties()
-                        .Select(s => s.GetValue(item)?.ToString() ?? "")
-                        .ToArray();
+                    var matchValue = new MatchValue(comboBoxSearchByOptions.Text, comboBoxMatchValue.Text);
+                    var narrowItems = items.Where(matchValue.WhereMatchesValue);
 
-                    listViewInventory.Items.Insert(0, new ListViewItem(data));
+                    if (checkBoxInventoryIncludeBlank.Checked)
+                        narrowItems = narrowItems.Concat(items.Where(matchValue.WhereMatchesBlank));
+
+                    items = narrowItems.ToList();
                 }
-
-                //var widths = new int[] { 150, 100 };
-                //var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-                //int i = 0;
-                //foreach (var prop in new[] { comboBoxSearchByOptions.Text, "Count" })
-                //    listViewInventory.Columns.Add(prop, getWidth(i++));
-
-                //var items = _auditRecords.GetStocklist()
-                //    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString() == comboBoxMatchValue.Text)
-                //    .GroupBy(gb => gb.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).Name)
-                //    .ToDictionary(k=>k.Key, v=>v.ToList());
-
-                //foreach (var key in items.Keys)
-                //    listViewInventory.Items.Insert(0, new ListViewItem(new string[] { key, items[key].Count().ToString() }));
-            }
-            else
-            {
-                var widths = new int[] { 100, 100, 250, 100, 150, 100 };
-                var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-                int i = 0;
-                foreach (var prop in typeof(AuditItem).GetProperties())
-                    listViewInventory.Columns.Add(prop.Name, getWidth(i++));
-
-                var items = _auditRecords.GetStocklist()
-                    //.Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
-                    .ToList();
 
                 foreach (var item in items)
                 { 
@@ -213,6 +223,32 @@ namespace BarcodeStocktake
 
                     listViewInventory.Items.Insert(0, new ListViewItem(data));
                 }
+            //}
+        }
+
+        private class MatchValue
+        {
+            private readonly string _matchPropertyName;
+            private readonly string _matchValue;
+
+            public MatchValue(string matchPropertyName, string matchValue) { _matchPropertyName = matchPropertyName; _matchValue = matchValue; }
+            public bool WhereMatchesValue(AuditItem item)
+            {
+                return item.GetType()
+                        .GetProperties()
+                        .Single(s => s.Name == _matchPropertyName)
+                        .GetValue(item)
+                        ?.ToString()
+                        ?.Equals(_matchValue, StringComparison.OrdinalIgnoreCase) ?? false;
+            }
+
+            public bool WhereMatchesBlank(AuditItem item)
+            {
+                return string.IsNullOrWhiteSpace(item.GetType()
+                            .GetProperties()
+                            .Single(s => s.Name == _matchPropertyName)
+                            .GetValue(item)
+                            ?.ToString());
             }
         }
     }
