@@ -88,7 +88,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Publish 
-      run: dotnet publish BarcodeStockcheck\BarcodeStockcheck -r win-x64 --self-contained -c Release --output ./Publish
+      run: dotnet publish BarcodeStockcheck\BarcodeStockcheck.csproj -r win-x64 --self-contained -c Release --output ./Publish
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
