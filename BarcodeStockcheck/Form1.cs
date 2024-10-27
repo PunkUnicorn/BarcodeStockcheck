@@ -133,7 +133,8 @@ namespace BarcodeStocktake
 
             comboBoxMatchValue.Text = null;
             comboBoxMatchValue.Items.Clear();
-            comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, me.Text));
+            try { comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, me.Text)); }
+            catch { }
         }
 
         private void checkBoxToMatchValue_CheckedChanged(object sender, EventArgs e)
@@ -143,87 +144,52 @@ namespace BarcodeStocktake
 
             comboBoxMatchValue.Text = null;
             comboBoxMatchValue.Items.Clear();
-            comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, comboBoxSearchByOptions.Text));
+            try { comboBoxMatchValue.Items.AddRange(_auditRecords.GetPropertyValues(checkBoxInventoryIncludeBlank.Checked, comboBoxSearchByOptions.Text)); }
+            catch { }
         }
 
         private void buttonRefreshList_Click(object sender, EventArgs e)
         {
+            labelInventoryQuantityTotal.Text = "";
             listViewInventory.Columns.Clear();
             listViewInventory.Items.Clear();
             listViewInventory.Clear();
 
-            // Get counts
-            //
-            //var widths = new int[] { 150, 100 };
-            //var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-            //int i = 0;
-            //foreach (var prop in new[] { comboBoxSearchByOptions.Text, "Count" })
-            //    listViewInventory.Columns.Add(prop, getWidth(i++));
+            var widths = new int[] { 27, 95, 60, 100, 200, 50, 150 };
+            var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
+            int i = 0;
+            foreach (var prop in typeof(AuditItem).GetProperties())
+                listViewInventory.Columns.Add(prop.Name, getWidth(i++));
 
-            //var items = _auditRecords.GetStocklist()
-            //    .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString() == comboBoxMatchValue.Text)
-            //    .GroupBy(gb => gb.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).Name)
-            //    .ToDictionary(k=>k.Key, v=>v.ToList());
+            var items = _auditRecords.GetStocklist();
 
-            //foreach (var key in items.Keys)
-            //    listViewInventory.Items.Insert(0, new ListViewItem(new string[] { key, items[key].Count().ToString() }));
+            if (!string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
+            {
+                var matchValue = new MatchValue(comboBoxSearchByOptions.Text, comboBoxMatchValue.Text);
+                var narrowItems = items.Where(matchValue.WhereMatchesValue);
 
+                if (checkBoxInventoryIncludeBlank.Checked)
+                    narrowItems = narrowItems.Concat(items.Where(matchValue.WhereMatchesBlank));
 
+                items = narrowItems.ToList();
+            }
 
+            var totalQuantity = 0;
+            foreach (var item in items)
+            { 
+                var data = typeof(AuditItem).GetProperties()
+                    .Select(s => s.GetValue(item)?.ToString() ?? "")
+                    .ToArray();
 
+                totalQuantity += typeof(AuditItem).GetProperties()
+                    .Where(prop => prop.Name.Equals("quantity", StringComparison.OrdinalIgnoreCase))
+                    .Select(s => int.Parse(s.GetValue(item)?.ToString() ?? "0"))
+                    .Sum();
 
-            //if (!string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
-            //{
+                listViewInventory.Items.Insert(0, new ListViewItem(data));
+            }
+            labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity.ToString()}";
 
-            //    var widths = new int[] { 100, 100, 250, 100, 150, 100 };
-            //    var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-            //    int i = 0;
-            //    foreach (var prop in typeof(AuditItem).GetProperties())
-            //        listViewInventory.Columns.Add(prop.Name, getWidth(i++));
-
-            //    var items = _auditRecords.GetStocklist()
-            //        .Where(w => w.GetType().GetProperties().Single(s => s.Name == comboBoxSearchByOptions.Text).GetValue(w)?.ToString()?.Equals(comboBoxMatchValue.Text, StringComparison.OrdinalIgnoreCase) ?? false)
-            //        .ToList();
-
-            //    foreach (var item in items)
-            //    {
-            //        var data = typeof(AuditItem).GetProperties()
-            //            .Select(s => s.GetValue(item)?.ToString() ?? "")
-            //            .ToArray();
-
-            //        listViewInventory.Items.Insert(0, new ListViewItem(data));
-            //    }
-            //}
-            //else
-            //{
-                var widths = new int[] { 30, 80, 50, 100, 200, 50, 150 };
-                var getWidth = (int i) => i >= widths.Length ? widths.Last() : widths[i];
-                int i = 0;
-                foreach (var prop in typeof(AuditItem).GetProperties())
-                    listViewInventory.Columns.Add(prop.Name, getWidth(i++));
-
-                var items = _auditRecords.GetStocklist();
-
-                if (!string.IsNullOrWhiteSpace(comboBoxMatchValue.Text))
-                {
-                    var matchValue = new MatchValue(comboBoxSearchByOptions.Text, comboBoxMatchValue.Text);
-                    var narrowItems = items.Where(matchValue.WhereMatchesValue);
-
-                    if (checkBoxInventoryIncludeBlank.Checked)
-                        narrowItems = narrowItems.Concat(items.Where(matchValue.WhereMatchesBlank));
-
-                    items = narrowItems.ToList();
-                }
-
-                foreach (var item in items)
-                { 
-                    var data = typeof(AuditItem).GetProperties()
-                        .Select(s => s.GetValue(item)?.ToString() ?? "")
-                        .ToArray();
-
-                    listViewInventory.Items.Insert(0, new ListViewItem(data));
-                }
-            //}
         }
 
         private class MatchValue
@@ -249,6 +215,11 @@ namespace BarcodeStocktake
                             .Single(s => s.Name == _matchPropertyName)
                             .GetValue(item)
                             ?.ToString());
+            }
+
+            public bool WhereMatchesValueOrMatchesBlank(AuditItem item)
+            {
+                return WhereMatchesValue(item) || WhereMatchesBlank(item);
             }
         }
     }

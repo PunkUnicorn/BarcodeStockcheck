@@ -61,6 +61,7 @@
             comboBoxMatchValue = new ComboBox();
             comboBoxSearchByOptions = new ComboBox();
             label2 = new Label();
+            labelInventoryQuantityTotal = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCover).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
@@ -337,7 +338,7 @@
             tabPageInventory.Location = new Point(4, 24);
             tabPageInventory.Name = "tabPageInventory";
             tabPageInventory.Padding = new Padding(3);
-            tabPageInventory.Size = new Size(831, 521);
+            tabPageInventory.Size = new Size(831, 718);
             tabPageInventory.TabIndex = 1;
             tabPageInventory.Text = "Inventory";
             tabPageInventory.UseVisualStyleBackColor = true;
@@ -366,6 +367,7 @@
             panel4.AutoSize = true;
             panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panel4.Controls.Add(label3);
+            panel4.Controls.Add(labelInventoryQuantityTotal);
             panel4.Controls.Add(buttonRefreshList);
             panel4.Controls.Add(checkBoxInventoryIncludeBlank);
             panel4.Controls.Add(comboBoxMatchValue);
@@ -373,7 +375,7 @@
             panel4.Controls.Add(label2);
             panel4.Location = new Point(3, 3);
             panel4.Name = "panel4";
-            panel4.Size = new Size(691, 30);
+            panel4.Size = new Size(662, 29);
             panel4.TabIndex = 0;
             // 
             // label3
@@ -389,7 +391,7 @@
             // 
             buttonRefreshList.AutoSize = true;
             buttonRefreshList.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonRefreshList.Location = new Point(490, 2);
+            buttonRefreshList.Location = new Point(464, 1);
             buttonRefreshList.Name = "buttonRefreshList";
             buttonRefreshList.Size = new Size(74, 25);
             buttonRefreshList.TabIndex = 4;
@@ -403,7 +405,7 @@
             checkBoxInventoryIncludeBlank.AutoSize = true;
             checkBoxInventoryIncludeBlank.Checked = true;
             checkBoxInventoryIncludeBlank.CheckState = CheckState.Checked;
-            checkBoxInventoryIncludeBlank.Location = new Point(586, 5);
+            checkBoxInventoryIncludeBlank.Location = new Point(544, 4);
             checkBoxInventoryIncludeBlank.Name = "checkBoxInventoryIncludeBlank";
             checkBoxInventoryIncludeBlank.Size = new Size(102, 19);
             checkBoxInventoryIncludeBlank.TabIndex = 1;
@@ -438,6 +440,14 @@
             label2.Size = new Size(93, 15);
             label2.TabIndex = 0;
             label2.Text = "Search proprety:";
+            // 
+            // labelInventoryQuantityTotal
+            // 
+            labelInventoryQuantityTotal.AutoSize = true;
+            labelInventoryQuantityTotal.Location = new Point(659, 6);
+            labelInventoryQuantityTotal.Name = "labelInventoryQuantityTotal";
+            labelInventoryQuantityTotal.Size = new Size(0, 15);
+            labelInventoryQuantityTotal.TabIndex = 1;
             // 
             // Form1
             // 
@@ -507,5 +517,6 @@
         private ListView listViewInventory;
         private CheckBox checkBoxInventoryIncludeBlank;
         private Label label3;
+        private Label labelInventoryQuantityTotal;
     }
 }
