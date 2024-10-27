@@ -105,6 +105,7 @@
             pictureBoxCover.Size = new Size(242, 210);
             pictureBoxCover.TabIndex = 2;
             pictureBoxCover.TabStop = false;
+            pictureBoxCover.Visible = false;
             // 
             // flowLayoutPanel1
             // 
@@ -120,7 +121,7 @@
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(839, 313);
+            flowLayoutPanel1.Size = new Size(839, 116);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -174,10 +175,12 @@
             // 
             textBoxTitle.Location = new Point(557, 3);
             textBoxTitle.Name = "textBoxTitle";
+            textBoxTitle.PlaceholderText = "Title";
             textBoxTitle.ReadOnly = true;
             textBoxTitle.Size = new Size(179, 23);
             textBoxTitle.TabIndex = 3;
             textBoxTitle.TabStop = false;
+            textBoxTitle.Visible = false;
             // 
             // panel2
             // 
@@ -187,6 +190,7 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(264, 210);
             panel2.TabIndex = 102;
+            panel2.Visible = false;
             // 
             // textBoxDescription
             // 
@@ -221,6 +225,7 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(242, 210);
             panel3.TabIndex = 103;
+            panel3.Visible = false;
             // 
             // button1
             // 
@@ -287,7 +292,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new Size(839, 866);
-            splitContainer1.SplitterDistance = 313;
+            splitContainer1.SplitterDistance = 116;
             splitContainer1.TabIndex = 4;
             splitContainer1.TabStop = false;
             // 
@@ -299,7 +304,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(839, 549);
+            tabControl1.Size = new Size(839, 746);
             tabControl1.TabIndex = 1;
             tabControl1.TabStop = false;
             // 
@@ -309,7 +314,7 @@
             tabPageAuditLog.Location = new Point(4, 24);
             tabPageAuditLog.Name = "tabPageAuditLog";
             tabPageAuditLog.Padding = new Padding(3);
-            tabPageAuditLog.Size = new Size(831, 521);
+            tabPageAuditLog.Size = new Size(831, 718);
             tabPageAuditLog.TabIndex = 0;
             tabPageAuditLog.Text = "Audit Log";
             tabPageAuditLog.UseVisualStyleBackColor = true;
@@ -319,7 +324,7 @@
             listViewLog.Dock = DockStyle.Fill;
             listViewLog.Location = new Point(3, 3);
             listViewLog.Name = "listViewLog";
-            listViewLog.Size = new Size(825, 515);
+            listViewLog.Size = new Size(825, 712);
             listViewLog.TabIndex = 0;
             listViewLog.TabStop = false;
             listViewLog.UseCompatibleStateImageBehavior = false;
