@@ -294,6 +294,7 @@
             radioButtonBarcodeLookup.Name = "radioButtonBarcodeLookup";
             radioButtonBarcodeLookup.Size = new Size(157, 19);
             radioButtonBarcodeLookup.TabIndex = 0;
+            radioButtonBarcodeLookup.TabStop = true;
             radioButtonBarcodeLookup.Text = "Use BarcodeLookup.com";
             radioButtonBarcodeLookup.UseVisualStyleBackColor = true;
             // 
@@ -357,28 +358,28 @@
             tabPageInventory.Location = new Point(4, 24);
             tabPageInventory.Name = "tabPageInventory";
             tabPageInventory.Padding = new Padding(3);
-            tabPageInventory.Size = new Size(831, 433);
+            tabPageInventory.Size = new Size(831, 747);
             tabPageInventory.TabIndex = 1;
             tabPageInventory.Text = "Inventory";
             tabPageInventory.UseVisualStyleBackColor = true;
             // 
             // listViewInventory
             // 
-            listViewInventory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            listViewInventory.Location = new Point(0, 39);
+            listViewInventory.Dock = DockStyle.Fill;
+            listViewInventory.Location = new Point(3, 42);
             listViewInventory.Name = "listViewInventory";
-            listViewInventory.Size = new Size(832, 551);
+            listViewInventory.Size = new Size(825, 702);
             listViewInventory.TabIndex = 1;
             listViewInventory.UseCompatibleStateImageBehavior = false;
             listViewInventory.View = View.Details;
             // 
             // flowLayoutPanel2
             // 
-            flowLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             flowLayoutPanel2.Controls.Add(panel4);
-            flowLayoutPanel2.Location = new Point(0, 0);
+            flowLayoutPanel2.Dock = DockStyle.Top;
+            flowLayoutPanel2.Location = new Point(3, 3);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(831, 39);
+            flowLayoutPanel2.Size = new Size(825, 39);
             flowLayoutPanel2.TabIndex = 0;
             // 
             // panel4
