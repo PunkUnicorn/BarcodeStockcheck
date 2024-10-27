@@ -104,7 +104,7 @@
             // 
             pictureBoxCover.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pictureBoxCover.BorderStyle = BorderStyle.FixedSingle;
-            pictureBoxCover.Location = new Point(3, 38);
+            pictureBoxCover.Location = new Point(3, 254);
             pictureBoxCover.Name = "pictureBoxCover";
             pictureBoxCover.Size = new Size(242, 210);
             pictureBoxCover.TabIndex = 2;
@@ -117,15 +117,15 @@
             flowLayoutPanel1.Controls.Add(buttonLookup);
             flowLayoutPanel1.Controls.Add(panel1);
             flowLayoutPanel1.Controls.Add(textBoxTitle);
-            flowLayoutPanel1.Controls.Add(pictureBoxCover);
             flowLayoutPanel1.Controls.Add(panel2);
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(labelError);
             flowLayoutPanel1.Controls.Add(panel5);
+            flowLayoutPanel1.Controls.Add(pictureBoxCover);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(839, 87);
+            flowLayoutPanel1.Size = new Size(839, 106);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -188,9 +188,9 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(textBoxDescription);
             panel2.Controls.Add(buttonCopyDescription);
-            panel2.Location = new Point(251, 38);
+            panel2.Controls.Add(textBoxDescription);
+            panel2.Location = new Point(3, 38);
             panel2.Name = "panel2";
             panel2.Size = new Size(264, 210);
             panel2.TabIndex = 102;
@@ -225,7 +225,7 @@
             // 
             panel3.Controls.Add(button1);
             panel3.Controls.Add(textBoxDetails);
-            panel3.Location = new Point(521, 38);
+            panel3.Location = new Point(273, 38);
             panel3.Name = "panel3";
             panel3.Size = new Size(242, 210);
             panel3.TabIndex = 103;
@@ -262,7 +262,7 @@
             labelError.BackColor = SystemColors.Info;
             labelError.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             labelError.ForeColor = SystemColors.InfoText;
-            labelError.Location = new Point(769, 35);
+            labelError.Location = new Point(521, 35);
             labelError.Name = "labelError";
             labelError.Size = new Size(0, 30);
             labelError.TabIndex = 104;
@@ -271,7 +271,7 @@
             // 
             panel5.Controls.Add(radioButtonGoUpc);
             panel5.Controls.Add(radioButtonBarcodeLookup);
-            panel5.Location = new Point(3, 254);
+            panel5.Location = new Point(527, 38);
             panel5.Name = "panel5";
             panel5.Size = new Size(162, 51);
             panel5.TabIndex = 106;
@@ -313,7 +313,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new Size(839, 866);
-            splitContainer1.SplitterDistance = 87;
+            splitContainer1.SplitterDistance = 106;
             splitContainer1.TabIndex = 4;
             splitContainer1.TabStop = false;
             // 
@@ -325,7 +325,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(839, 775);
+            tabControl1.Size = new Size(839, 756);
             tabControl1.TabIndex = 1;
             tabControl1.TabStop = false;
             // 
@@ -335,7 +335,7 @@
             tabPageAuditLog.Location = new Point(4, 24);
             tabPageAuditLog.Name = "tabPageAuditLog";
             tabPageAuditLog.Padding = new Padding(3);
-            tabPageAuditLog.Size = new Size(831, 747);
+            tabPageAuditLog.Size = new Size(831, 728);
             tabPageAuditLog.TabIndex = 0;
             tabPageAuditLog.Text = "Audit Log";
             tabPageAuditLog.UseVisualStyleBackColor = true;
@@ -345,7 +345,7 @@
             listViewLog.Dock = DockStyle.Fill;
             listViewLog.Location = new Point(3, 3);
             listViewLog.Name = "listViewLog";
-            listViewLog.Size = new Size(825, 741);
+            listViewLog.Size = new Size(825, 722);
             listViewLog.TabIndex = 0;
             listViewLog.TabStop = false;
             listViewLog.UseCompatibleStateImageBehavior = false;
@@ -358,7 +358,7 @@
             tabPageInventory.Location = new Point(4, 24);
             tabPageInventory.Name = "tabPageInventory";
             tabPageInventory.Padding = new Padding(3);
-            tabPageInventory.Size = new Size(831, 747);
+            tabPageInventory.Size = new Size(831, 728);
             tabPageInventory.TabIndex = 1;
             tabPageInventory.Text = "Inventory";
             tabPageInventory.UseVisualStyleBackColor = true;
@@ -368,7 +368,7 @@
             listViewInventory.Dock = DockStyle.Fill;
             listViewInventory.Location = new Point(3, 42);
             listViewInventory.Name = "listViewInventory";
-            listViewInventory.Size = new Size(825, 702);
+            listViewInventory.Size = new Size(825, 683);
             listViewInventory.TabIndex = 1;
             listViewInventory.UseCompatibleStateImageBehavior = false;
             listViewInventory.View = View.Details;
@@ -401,7 +401,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(244, 5);
+            label3.Location = new Point(247, 5);
             label3.Name = "label3";
             label3.Size = new Size(90, 15);
             label3.TabIndex = 6;
@@ -419,7 +419,7 @@
             // 
             buttonRefreshList.AutoSize = true;
             buttonRefreshList.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonRefreshList.Location = new Point(464, 1);
+            buttonRefreshList.Location = new Point(467, 1);
             buttonRefreshList.Name = "buttonRefreshList";
             buttonRefreshList.Size = new Size(74, 25);
             buttonRefreshList.TabIndex = 4;
@@ -433,7 +433,7 @@
             checkBoxInventoryIncludeBlank.AutoSize = true;
             checkBoxInventoryIncludeBlank.Checked = true;
             checkBoxInventoryIncludeBlank.CheckState = CheckState.Checked;
-            checkBoxInventoryIncludeBlank.Location = new Point(544, 4);
+            checkBoxInventoryIncludeBlank.Location = new Point(547, 4);
             checkBoxInventoryIncludeBlank.Name = "checkBoxInventoryIncludeBlank";
             checkBoxInventoryIncludeBlank.Size = new Size(102, 19);
             checkBoxInventoryIncludeBlank.TabIndex = 1;
@@ -444,7 +444,7 @@
             // comboBoxMatchValue
             // 
             comboBoxMatchValue.FormattingEnabled = true;
-            comboBoxMatchValue.Location = new Point(337, 2);
+            comboBoxMatchValue.Location = new Point(340, 2);
             comboBoxMatchValue.Name = "comboBoxMatchValue";
             comboBoxMatchValue.Size = new Size(121, 23);
             comboBoxMatchValue.TabIndex = 3;
