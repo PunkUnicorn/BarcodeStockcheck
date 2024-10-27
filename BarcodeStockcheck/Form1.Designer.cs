@@ -46,7 +46,9 @@
             button1 = new Button();
             textBoxDetails = new TextBox();
             labelError = new Label();
-            checkBoxSwapProvider = new CheckBox();
+            panel5 = new Panel();
+            radioButtonGoUpc = new RadioButton();
+            radioButtonBarcodeLookup = new RadioButton();
             splitContainer1 = new SplitContainer();
             tabControl1 = new TabControl();
             tabPageAuditLog = new TabPage();
@@ -56,17 +58,18 @@
             flowLayoutPanel2 = new FlowLayoutPanel();
             panel4 = new Panel();
             label3 = new Label();
+            labelInventoryQuantityTotal = new Label();
             buttonRefreshList = new Button();
             checkBoxInventoryIncludeBlank = new CheckBox();
             comboBoxMatchValue = new ComboBox();
             comboBoxSearchByOptions = new ComboBox();
             label2 = new Label();
-            labelInventoryQuantityTotal = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCover).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
+            panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -118,11 +121,11 @@
             flowLayoutPanel1.Controls.Add(panel2);
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(labelError);
-            flowLayoutPanel1.Controls.Add(checkBoxSwapProvider);
+            flowLayoutPanel1.Controls.Add(panel5);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(839, 116);
+            flowLayoutPanel1.Size = new Size(839, 87);
             flowLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -264,19 +267,35 @@
             labelError.Size = new Size(0, 30);
             labelError.TabIndex = 104;
             // 
-            // checkBoxSwapProvider
+            // panel5
             // 
-            checkBoxSwapProvider.AutoSize = true;
-            checkBoxSwapProvider.Checked = true;
-            checkBoxSwapProvider.CheckState = CheckState.Checked;
-            checkBoxSwapProvider.Location = new Point(3, 254);
-            checkBoxSwapProvider.Name = "checkBoxSwapProvider";
-            checkBoxSwapProvider.Size = new Size(357, 19);
-            checkBoxSwapProvider.TabIndex = 105;
-            checkBoxSwapProvider.TabStop = false;
-            checkBoxSwapProvider.Text = "BarcodeLookup primary, Go-upc secondary (uncheck to &Swap)";
-            checkBoxSwapProvider.UseVisualStyleBackColor = true;
-            checkBoxSwapProvider.CheckedChanged += checkBoxSwapProvider_CheckedChanged;
+            panel5.Controls.Add(radioButtonGoUpc);
+            panel5.Controls.Add(radioButtonBarcodeLookup);
+            panel5.Location = new Point(3, 254);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(162, 51);
+            panel5.TabIndex = 106;
+            // 
+            // radioButtonGoUpc
+            // 
+            radioButtonGoUpc.AutoSize = true;
+            radioButtonGoUpc.Location = new Point(3, 28);
+            radioButtonGoUpc.Name = "radioButtonGoUpc";
+            radioButtonGoUpc.Size = new Size(113, 19);
+            radioButtonGoUpc.TabIndex = 1;
+            radioButtonGoUpc.Text = "Use go-upc.com";
+            radioButtonGoUpc.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonBarcodeLookup
+            // 
+            radioButtonBarcodeLookup.AutoSize = true;
+            radioButtonBarcodeLookup.Checked = true;
+            radioButtonBarcodeLookup.Location = new Point(3, 3);
+            radioButtonBarcodeLookup.Name = "radioButtonBarcodeLookup";
+            radioButtonBarcodeLookup.Size = new Size(157, 19);
+            radioButtonBarcodeLookup.TabIndex = 0;
+            radioButtonBarcodeLookup.Text = "Use BarcodeLookup.com";
+            radioButtonBarcodeLookup.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -293,7 +312,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
             splitContainer1.Size = new Size(839, 866);
-            splitContainer1.SplitterDistance = 116;
+            splitContainer1.SplitterDistance = 87;
             splitContainer1.TabIndex = 4;
             splitContainer1.TabStop = false;
             // 
@@ -305,7 +324,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(839, 746);
+            tabControl1.Size = new Size(839, 775);
             tabControl1.TabIndex = 1;
             tabControl1.TabStop = false;
             // 
@@ -315,7 +334,7 @@
             tabPageAuditLog.Location = new Point(4, 24);
             tabPageAuditLog.Name = "tabPageAuditLog";
             tabPageAuditLog.Padding = new Padding(3);
-            tabPageAuditLog.Size = new Size(831, 718);
+            tabPageAuditLog.Size = new Size(831, 747);
             tabPageAuditLog.TabIndex = 0;
             tabPageAuditLog.Text = "Audit Log";
             tabPageAuditLog.UseVisualStyleBackColor = true;
@@ -325,7 +344,7 @@
             listViewLog.Dock = DockStyle.Fill;
             listViewLog.Location = new Point(3, 3);
             listViewLog.Name = "listViewLog";
-            listViewLog.Size = new Size(825, 712);
+            listViewLog.Size = new Size(825, 741);
             listViewLog.TabIndex = 0;
             listViewLog.TabStop = false;
             listViewLog.UseCompatibleStateImageBehavior = false;
@@ -338,7 +357,7 @@
             tabPageInventory.Location = new Point(4, 24);
             tabPageInventory.Name = "tabPageInventory";
             tabPageInventory.Padding = new Padding(3);
-            tabPageInventory.Size = new Size(831, 718);
+            tabPageInventory.Size = new Size(831, 433);
             tabPageInventory.TabIndex = 1;
             tabPageInventory.Text = "Inventory";
             tabPageInventory.UseVisualStyleBackColor = true;
@@ -386,6 +405,14 @@
             label3.Size = new Size(90, 15);
             label3.TabIndex = 6;
             label3.Text = "To match value:";
+            // 
+            // labelInventoryQuantityTotal
+            // 
+            labelInventoryQuantityTotal.AutoSize = true;
+            labelInventoryQuantityTotal.Location = new Point(659, 6);
+            labelInventoryQuantityTotal.Name = "labelInventoryQuantityTotal";
+            labelInventoryQuantityTotal.Size = new Size(0, 15);
+            labelInventoryQuantityTotal.TabIndex = 1;
             // 
             // buttonRefreshList
             // 
@@ -441,14 +468,6 @@
             label2.TabIndex = 0;
             label2.Text = "Search proprety:";
             // 
-            // labelInventoryQuantityTotal
-            // 
-            labelInventoryQuantityTotal.AutoSize = true;
-            labelInventoryQuantityTotal.Location = new Point(659, 6);
-            labelInventoryQuantityTotal.Name = "labelInventoryQuantityTotal";
-            labelInventoryQuantityTotal.Size = new Size(0, 15);
-            labelInventoryQuantityTotal.TabIndex = 1;
-            // 
             // Form1
             // 
             AcceptButton = buttonLookup;
@@ -469,6 +488,8 @@
             panel2.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -503,7 +524,6 @@
         private ListView listViewLog;
         private Label labelError;
         private TextBox textBoxAlias;
-        private CheckBox checkBoxSwapProvider;
         private TextBox textBoxStorageCode;
         private TabControl tabControl1;
         private TabPage tabPageAuditLog;
@@ -518,5 +538,8 @@
         private CheckBox checkBoxInventoryIncludeBlank;
         private Label label3;
         private Label labelInventoryQuantityTotal;
+        private Panel panel5;
+        private RadioButton radioButtonGoUpc;
+        private RadioButton radioButtonBarcodeLookup;
     }
 }

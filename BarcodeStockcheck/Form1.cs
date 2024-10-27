@@ -8,7 +8,7 @@ namespace BarcodeStocktake
     {
         private BarcodeLookupService barcodeLookupService;
         private BarcodeLookupService goUpsService2;
-        private BarcodeLookupService? useService;
+        //private BarcodeLookupService? useService;
         private IStoreBarcodeLookupResults _storeLookupResults = new StoreLookupResults();
         private AuditRecords _auditRecords = new AuditRecords();
         private Color backColor;
@@ -24,7 +24,7 @@ namespace BarcodeStocktake
             backColor = textBoxBarcode.BackColor;
             barcodeLookupService = new BarcodeLookupService(new BarcodeExecuteBarcodeLookup(_storeLookupResults));
             goUpsService2 = new BarcodeLookupService(new BarcodeExecuteGoUpc(_storeLookupResults));
-            useService = barcodeLookupService;
+            //useService = barcodeLookupService;
 
             //comboBoxMatchValue.Enabled = checkBoxToMatchValue.Checked;
 
@@ -44,8 +44,7 @@ namespace BarcodeStocktake
         {
             var me = (Button)sender;
 
-            if (useService is null)
-                useService = checkBoxSwapProvider.Checked ? barcodeLookupService : goUpsService2;
+            var useService = radioButtonBarcodeLookup.Checked ? barcodeLookupService : goUpsService2;
 
             var code = textBoxBarcode.Text;
             var alias = code != textBoxAlias.Text ? textBoxAlias.Text : "";
@@ -110,7 +109,6 @@ namespace BarcodeStocktake
 
         private void ResetDataEntry()
         {
-            checkBoxSwapProvider.Checked = true;
             textBoxAlias.BackColor = backColor;
             textBoxBarcode.BackColor = backColor;
             labelError.Text = "";
@@ -120,12 +118,12 @@ namespace BarcodeStocktake
             textBoxBarcode.Focus();
         }
 
-        private void checkBoxSwapProvider_CheckedChanged(object sender, EventArgs e)
-        {
-            var me = (CheckBox)sender;
-            useService = me.Checked ? barcodeLookupService : goUpsService2;
-            textBoxBarcode.Focus();
-        }
+        //private void checkBoxSwapProvider_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    var me = (CheckBox)sender;
+        //    useService = me.Checked ? barcodeLookupService : goUpsService2;
+        //    textBoxBarcode.Focus();
+        //}
 
         private void comboBoxSearchByOptions_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -176,7 +174,7 @@ namespace BarcodeStocktake
 
             var totalQuantity = 0;
             foreach (var item in items)
-            { 
+            {
                 var data = typeof(AuditItem).GetProperties()
                     .Select(s => s.GetValue(item)?.ToString() ?? "")
                     .ToArray();
@@ -188,8 +186,7 @@ namespace BarcodeStocktake
 
                 listViewInventory.Items.Insert(0, new ListViewItem(data));
             }
-            labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity.ToString()}";
-
+            labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity}";
         }
 
         private class MatchValue
