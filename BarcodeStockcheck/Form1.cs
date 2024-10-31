@@ -1,6 +1,8 @@
+using BarcodeStockcheck;
 using Microsoft.VisualBasic.Devices;
 using System.Linq;
 using System.Media;
+using System.Text;
 
 namespace BarcodeStocktake
 {
@@ -65,6 +67,7 @@ namespace BarcodeStocktake
                 textBoxBarcode.BackColor = Color.Red;
                 textBoxAlias.Text = code;
                 textBoxBarcode.Text = code;
+                textBoxQuantity.Text = quantityToAdd.ToString();
             }
             else
             {
@@ -187,8 +190,45 @@ namespace BarcodeStocktake
                 listViewInventory.Items.Insert(0, new ListViewItem(data));
             }
             labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity}";
+
+            var rnd = new Random().Next(1001);
+            MassimilianoStackOverflow.ListViewToCSV(listViewInventory, $"inventory{rnd}.csv", true);
         }
 
+
+        // https://stackoverflow.com/questions/1008556/export-listview-to-csv
+        public static class MassimilianoStackOverflow
+        {
+            public static void ListViewToCSV(ListView listView, string filePath, bool includeHidden)
+            {
+                //make header string
+                StringBuilder result = new StringBuilder();
+                WriteCSVRow(result, listView.Columns.Count, i => includeHidden || listView.Columns[i].Width > 0, i => listView.Columns[i].Text);
+
+                //export data rows
+                foreach (ListViewItem listItem in listView.Items)
+                    WriteCSVRow(result, listView.Columns.Count, i => includeHidden || listView.Columns[i].Width > 0, i => listItem.SubItems[i].Text);
+
+                File.WriteAllText(filePath, result.ToString());
+            }
+
+            private static void WriteCSVRow(StringBuilder result, int itemsCount, Func<int, bool> isColumnNeeded, Func<int, string> columnValue)
+            {
+                bool isFirstTime = true;
+                for (int i = 0; i < itemsCount; i++)
+                {
+                    if (!isColumnNeeded(i))
+                        continue;
+
+                    if (!isFirstTime)
+                        result.Append(",");
+                    isFirstTime = false;
+
+                    result.Append(String.Format("\"{0}\"", columnValue(i)));
+                }
+                result.AppendLine();
+            }
+        }
         private class MatchValue
         {
             private readonly string _matchPropertyName;
@@ -219,5 +259,20 @@ namespace BarcodeStocktake
                 return WhereMatchesValue(item) || WhereMatchesBlank(item);
             }
         }
+
+        private void buttonAddManually_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormEnterManualDetails()) 
+            {
+                form.Tag = textBoxBarcode.Text;
+                if (form.ShowDialog() != DialogResult.OK)
+                    return;
+
+                var data = (BarcodeLookupResult)form.Tag;
+                _storeLookupResults.Add(data.Code, data);
+            }
+        }
+
+       
     }
 }

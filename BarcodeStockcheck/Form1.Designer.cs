@@ -40,8 +40,8 @@
             label1 = new Label();
             textBoxTitle = new TextBox();
             panel2 = new Panel();
-            textBoxDescription = new TextBox();
             buttonCopyDescription = new Button();
+            textBoxDescription = new TextBox();
             panel3 = new Panel();
             button1 = new Button();
             textBoxDetails = new TextBox();
@@ -64,6 +64,7 @@
             comboBoxMatchValue = new ComboBox();
             comboBoxSearchByOptions = new ComboBox();
             label2 = new Label();
+            buttonAddManually = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCover).BeginInit();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
@@ -121,6 +122,7 @@
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(labelError);
             flowLayoutPanel1.Controls.Add(panel5);
+            flowLayoutPanel1.Controls.Add(buttonAddManually);
             flowLayoutPanel1.Controls.Add(pictureBoxCover);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
@@ -196,18 +198,6 @@
             panel2.TabIndex = 102;
             panel2.Visible = false;
             // 
-            // textBoxDescription
-            // 
-            textBoxDescription.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDescription.Location = new Point(3, 3);
-            textBoxDescription.Multiline = true;
-            textBoxDescription.Name = "textBoxDescription";
-            textBoxDescription.PlaceholderText = "No description";
-            textBoxDescription.ReadOnly = true;
-            textBoxDescription.Size = new Size(258, 173);
-            textBoxDescription.TabIndex = 4;
-            textBoxDescription.TabStop = false;
-            // 
             // buttonCopyDescription
             // 
             buttonCopyDescription.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -220,6 +210,18 @@
             buttonCopyDescription.TabStop = false;
             buttonCopyDescription.Text = "Copy &Description";
             buttonCopyDescription.UseVisualStyleBackColor = true;
+            // 
+            // textBoxDescription
+            // 
+            textBoxDescription.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxDescription.Location = new Point(3, 3);
+            textBoxDescription.Multiline = true;
+            textBoxDescription.Name = "textBoxDescription";
+            textBoxDescription.PlaceholderText = "No description";
+            textBoxDescription.ReadOnly = true;
+            textBoxDescription.Size = new Size(258, 173);
+            textBoxDescription.TabIndex = 4;
+            textBoxDescription.TabStop = false;
             // 
             // panel3
             // 
@@ -469,6 +471,18 @@
             label2.TabIndex = 0;
             label2.Text = "Search proprety:";
             // 
+            // buttonAddManually
+            // 
+            buttonAddManually.AutoSize = true;
+            buttonAddManually.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonAddManually.Location = new Point(695, 38);
+            buttonAddManually.Name = "buttonAddManually";
+            buttonAddManually.Size = new Size(91, 25);
+            buttonAddManually.TabIndex = 107;
+            buttonAddManually.Text = "&Add manually";
+            buttonAddManually.UseVisualStyleBackColor = true;
+            buttonAddManually.Click += buttonAddManually_Click;
+            // 
             // Form1
             // 
             AcceptButton = buttonLookup;
@@ -542,5 +556,6 @@
         private Panel panel5;
         private RadioButton radioButtonGoUpc;
         private RadioButton radioButtonBarcodeLookup;
+        private Button buttonAddManually;
     }
 }
