@@ -191,7 +191,7 @@ namespace BarcodeStocktake
                 orderedItems.Add(data);
             }
             
-            foreach (var item in orderedItems.OrderBy(p=>p.Skip(5).FirstOrDefault() ?? ""))
+            foreach (var item in orderedItems.OrderBy(p=>p.Skip(4).FirstOrDefault() ?? ""))
                 listViewInventory.Items.Insert(0, new ListViewItem(item));
 
             
