@@ -191,8 +191,8 @@ namespace BarcodeStocktake
                 orderedItems.Add(data);
             }
             
-            foreach (var item in orderedItems.OrderBy(p=>p))
-                listViewInventory.Items.Insert(0, new ListViewItem(data));
+            foreach (var item in orderedItems.OrderBy(p=>p.Skip(5).FirstOrDefault() ?? ""))
+                listViewInventory.Items.Insert(0, new ListViewItem(item));
 
             
             labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity}";
