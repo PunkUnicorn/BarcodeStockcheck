@@ -176,6 +176,7 @@ namespace BarcodeStocktake
             }
 
             var totalQuantity = 0;
+            var orderedItems = new List<string[]>();
             foreach (var item in items)
             {
                 var data = typeof(AuditItem).GetProperties()
@@ -186,9 +187,14 @@ namespace BarcodeStocktake
                     .Where(prop => prop.Name.Equals("quantity", StringComparison.OrdinalIgnoreCase))
                     .Select(s => int.Parse(s.GetValue(item)?.ToString() ?? "0"))
                     .Sum();
-
-                listViewInventory.Items.Insert(0, new ListViewItem(data));
+                    
+                orderedItems.Add(data);
             }
+            
+            foreach (var item in orderedItems.OrderBy(p=>p))
+                listViewInventory.Items.Insert(0, new ListViewItem(data));
+
+            
             labelInventoryQuantityTotal.Text = $"Shown quantity: {totalQuantity}";
 
             var rnd = new Random().Next(1001);
