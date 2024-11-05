@@ -31,6 +31,7 @@ namespace BarcodeStockcheck
                 Description = textBoxAddDescription.Text,
                 ImageUrl = textBoxAddImageUrl.Text
             };
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
